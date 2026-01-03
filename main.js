@@ -320,7 +320,7 @@ function resetOutputStatus() {
 
 function createResultHTML(username, repoFullName, starredAt) {
   const formattedDate = formatTimestamp(starredAt);
-  const isoDate = starredAt;
+  const relativeTime = timeago.format(starredAt);
 
   let html = `<div class="star-info">`;
   html += `<div class="star-info-line"><strong>${sanitizeString(
@@ -328,7 +328,9 @@ function createResultHTML(username, repoFullName, starredAt) {
   )}</strong> starred <strong>${sanitizeString(repoFullName)}</strong></div>`;
   html += `<div class="star-info-line">on <strong>${sanitizeString(
     formattedDate
-  )}</strong></div>`;
+  )}</strong> <span class="relative-time">(${sanitizeString(
+    relativeTime
+  )})</span></div>`;
   html += `</div>`;
 
   return html;

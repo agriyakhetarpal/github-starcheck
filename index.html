@@ -23,6 +23,7 @@
       content="Check when a specific GitHub user starred a repository. Enter a username and repository to find the star timestamp."
     />
     <script src="https://unpkg.com/localstorage-slim@2.7.1/dist/localstorage-slim.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@4.0.2/dist/timeago.min.js"></script>
     <script defer type="module" src="main.js"></script>
 
     <style>
@@ -195,6 +196,8 @@
         margin: 10px 0;
         font-size: 0.85rem;
         text-align: left;
+        width: 100%;
+        box-sizing: border-box;
       }
 
       .star-info-line {
@@ -211,6 +214,11 @@
         word-break: normal;
         overflow-wrap: break-word;
         hyphens: none;
+      }
+
+      .relative-time {
+        color: #888;
+        font-size: 0.9em;
       }
 
       footer {
