@@ -162,22 +162,35 @@ async function getRepoStargazers(owner, repo) {
 }
 
 async function findStarTimestamp(username, owner, repo) {
-  const [userInfo, repoInfo] = await Promise.all([
-    getUserInfo(username),
-    getRepoInfo(owner, repo),
-  ]);
-
-  const userStarredCount = userInfo.public_repos;
+  const repoInfo = await getRepoInfo(owner, repo);
   const repoStargazersCount = repoInfo.stargazers_count;
 
-  console.log(
-    `User has starred ${userStarredCount} repos, repo has ${repoStargazersCount} stargazers`
+  // https://stackoverflow.com/a/30638428 and https://stackoverflow.com/a/33183185
+  const countResponse = await fetch(
+    `${GITHUB_API}/users/${username}/starred?per_page=1`,
+    {
+      headers: {
+        Accept: "application/vnd.github.star+json",
+      },
+    }
   );
+
+  const linkHeader = countResponse.headers.get("Link");
+  let userStarredCount = 0;
+
+  if (linkHeader && linkHeader.includes('rel="last"')) {
+    const lastPageMatch = linkHeader.match(/[?&]page=(\d+)>; rel="last"/);
+    if (lastPageMatch) {
+      userStarredCount = parseInt(lastPageMatch[1]);
+    }
+  } else {
+    const data = await countResponse.json();
+    userStarredCount = data.length;
+  }
 
   let starredAt = null;
 
   if (userStarredCount <= repoStargazersCount) {
-    console.log("Querying user's starred repos (smaller list)");
     const starredRepos = await getUserStarredRepos(username);
 
     for (const item of starredRepos) {
@@ -188,7 +201,6 @@ async function findStarTimestamp(username, owner, repo) {
       }
     }
   } else {
-    console.log("Querying repo's stargazers (smaller list)");
     const stargazers = await getRepoStargazers(owner, repo);
 
     for (const item of stargazers) {
