@@ -371,6 +371,56 @@ async function onSubmit() {
   let resultString;
 
   try {
+    let userExists = true;
+    let repoExists = true;
+    let userInfo, repoInfo;
+
+    try {
+      userInfo = await getUserInfo(username);
+    } catch (err) {
+      if (err.name === "HTTPError" && err.status === 404) {
+        userExists = false;
+      } else {
+        throw err;
+      }
+    }
+
+    try {
+      repoInfo = await getRepoInfo(owner, repo);
+    } catch (err) {
+      if (err.name === "HTTPError" && err.status === 404) {
+        repoExists = false;
+      } else {
+        throw err;
+      }
+    }
+
+    if (!userExists && !repoExists) {
+      resultString = `Neither the user <strong>${sanitizeString(
+        username
+      )}</strong> nor the repository <strong>${sanitizeString(
+        repoFullName
+      )}</strong> exist.`;
+      setFinishedStatus(true, resultString);
+      return;
+    }
+
+    if (!userExists) {
+      resultString = `The user <strong>${sanitizeString(
+        username
+      )}</strong> does not exist.`;
+      setFinishedStatus(true, resultString);
+      return;
+    }
+
+    if (!repoExists) {
+      resultString = `The repository <strong>${sanitizeString(
+        repoFullName
+      )}</strong> does not exist.`;
+      setFinishedStatus(true, resultString);
+      return;
+    }
+
     const starredAt = await findStarTimestamp(username, owner, repo);
 
     if (starredAt) {
