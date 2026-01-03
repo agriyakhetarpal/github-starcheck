@@ -318,21 +318,6 @@ function resetOutputStatus() {
   removeQueryParamsAndTitle();
 }
 
-async function copyToClipboard(text, button) {
-  try {
-    await navigator.clipboard.writeText(text);
-    const originalText = button.textContent;
-    button.textContent = "Copied!";
-    button.classList.add("copied");
-    setTimeout(() => {
-      button.textContent = originalText;
-      button.classList.remove("copied");
-    }, 1500);
-  } catch (err) {
-    console.error("Failed to copy to clipboard:", err);
-  }
-}
-
 function createResultHTML(username, repoFullName, starredAt) {
   const formattedDate = formatTimestamp(starredAt);
   const isoDate = starredAt;
@@ -345,9 +330,6 @@ function createResultHTML(username, repoFullName, starredAt) {
     formattedDate
   )}</strong></div>`;
   html += `</div>`;
-  html += `<button class="copy-button" data-timestamp="${sanitizeString(
-    isoDate
-  )}">Copy ISO timestamp</button>`;
 
   return html;
 }
@@ -380,11 +362,6 @@ async function onSubmit() {
       resultString = createResultHTML(username, repoFullName, starredAt);
       setFinishedStatus(false, resultString);
       updateQueryParamsAndTitle(username, repoFullName);
-
-      document.querySelector(".copy-button").addEventListener("click", (e) => {
-        const timestamp = e.target.dataset.timestamp;
-        copyToClipboard(timestamp, e.target);
-      });
     } else {
       resultString = `<strong>${sanitizeString(
         username
