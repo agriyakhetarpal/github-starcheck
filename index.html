@@ -221,6 +221,47 @@
         font-size: 0.9em;
       }
 
+      .how-it-works {
+        margin-top: 30px;
+        position: relative;
+        border-radius: 0.2rem;
+        overflow: hidden;
+        box-shadow: 0 0.2rem 0.5rem rgb(0 0 0 / 5%),
+          0 0 0.0625rem rgb(0 0 0 / 10%);
+        font-size: 0.85rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .how-it-works-header {
+        margin: 0;
+        padding: 0.5rem;
+        padding-left: 2rem;
+        background-color: var(--primary-accent-color);
+        color: white;
+        font-weight: bold;
+      }
+
+      .how-it-works-header::before {
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        content: "";
+        position: absolute;
+        left: 0.5rem;
+        background-color: white;
+        mask-image: var(--admonition-icon);
+      }
+
+      .how-it-works-body {
+        margin: 0.7rem;
+      }
+
+      .how-it-works-body a {
+        color: var(--primary-accent-color);
+        text-decoration: underline;
+      }
+
       footer {
         margin-top: auto;
         margin-bottom: 0;
@@ -275,6 +316,20 @@
       <div class="output-text-container">
         <i><p class="working-status-text"></p></i>
         <output class="result-text"></output>
+      </div>
+      <div class="how-it-works">
+        <p class="how-it-works-header">How it works</p>
+        <p class="how-it-works-body">
+          This web tool finds when a user starred a repository by querying the
+          GitHub API. To minimise the number of API calls incurred, it first
+          compares the user's total starred repositories against the repo's
+          total stargazers, then queries whichever list is smaller (thanks to
+          <a href="https://stackoverflow.com/a/30638428" target="_blank"
+            >this Stack Overflow answer</a
+          >). It then merges the results from the "stargazers for a repo" and
+          "starred repos for a user" endpoints to find the exact timestamp when
+          the user starred the repository.
+        </p>
       </div>
     </main>
     <footer>
