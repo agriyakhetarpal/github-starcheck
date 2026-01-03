@@ -396,9 +396,9 @@ async function onSubmit() {
     }
 
     if (!userExists && !repoExists) {
-      resultString = `Neither the user <strong>${sanitizeString(
+      resultString = `Neither the user <strong class="nowrap">${sanitizeString(
         username
-      )}</strong> nor the repository <strong>${sanitizeString(
+      )}</strong> nor the repository <strong class="nowrap">${sanitizeString(
         repoFullName
       )}</strong> exist.`;
       setFinishedStatus(true, resultString);
@@ -406,7 +406,7 @@ async function onSubmit() {
     }
 
     if (!userExists) {
-      resultString = `The user <strong>${sanitizeString(
+      resultString = `The user <strong class="nowrap">${sanitizeString(
         username
       )}</strong> does not exist.`;
       setFinishedStatus(true, resultString);
@@ -414,7 +414,7 @@ async function onSubmit() {
     }
 
     if (!repoExists) {
-      resultString = `The repository <strong>${sanitizeString(
+      resultString = `The repository <strong class="nowrap">${sanitizeString(
         repoFullName
       )}</strong> does not exist.`;
       setFinishedStatus(true, resultString);
@@ -428,9 +428,9 @@ async function onSubmit() {
       setFinishedStatus(false, resultString);
       updateQueryParamsAndTitle(username, repoFullName);
     } else {
-      resultString = `<strong>${sanitizeString(
+      resultString = `<strong class="nowrap">${sanitizeString(
         username
-      )}</strong> has not starred <strong>${sanitizeString(
+      )}</strong> has not starred <strong class="nowrap">${sanitizeString(
         repoFullName
       )}</strong>`;
       setFinishedStatus(false, resultString);
